@@ -1,2 +1,2 @@
-Competive-Programming-2014-Fall-
+Competitive-Programming-2014-Fall
 ================================
