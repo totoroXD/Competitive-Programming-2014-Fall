@@ -170,6 +170,7 @@ struct SplaySequence{
    2 3 4 5 6 7 8 9 10 1
 
 */
+
 ```
 #DataStructure/SegmentTree(kth).cpp
 ``` cpp
@@ -249,6 +250,7 @@ struct segment_tree{
         }
     }
 }st;
+
 ```
 #Geometry/geometry.cpp
 ``` cpp
@@ -453,6 +455,7 @@ vector<Point> halfplane(vector<Line> l)
     res.push_back(q[L].intersectionWithLine(q[R-1]));
     return res;
 }
+
 ```
 #Graph/BCC.cpp
 ``` cpp
@@ -517,7 +520,8 @@ void dfs(int v, int p, int d){
 			}
 		}
 	}
-}```
+}
+```
 #Graph/MinCut.cpp
 ``` cpp
 int V, G[MAX_V][MAX_V], w[MAX_V], contract[MAX_V];
@@ -559,7 +563,8 @@ int mincut(){//Stoer-Wagner O(V^3)
             }
     }
     return res;
-}```
+}
+```
 #Graph/GeneralMatching.cpp
 ``` cpp
 int inQ[MAXN], frm[MAXN], typ[MAXN], wife[MAXN], fa[MAXN], vit[MAXN];
@@ -621,6 +626,7 @@ void Edmond(){
   for(int i=1;i<=n;i++) E[i].clear(), wife[i] = 0;
   for(int i=1;i<=n;i++) if(!wife[i]) path(i);
 }
+
 ```
 #Graph/MincostFlow.cpp
 ``` cpp
@@ -678,6 +684,7 @@ int mincost_flow(int s, int t, int flow){
 	}
 	return cost;
 }
+
 ```
 #Graph/HeavyLight.cpp
 ``` cpp
@@ -720,7 +727,8 @@ int lca(int i, int j){
         if (depth[head[i]] > depth[head[j]]) i = parent[head[i]];
         else j = parent[head[j]];
     return depth[i] < depth[j] ? i : j;
-}```
+}
+```
 #Graph/SCC.cpp
 ``` cpp
 #define MAX_V 10000
@@ -761,7 +769,8 @@ int scc(){
         if(!used[vs[i]])
             rdfs(vs[i], k++);
     return k;
-}```
+}
+```
 #Graph/MinimumDirectedSpanningTree.cpp
 ``` cpp
 map<string, int> lib;
@@ -864,6 +873,7 @@ int main()
   }
   return 0;
 }
+
 ```
 #Graph/MaxFlow.cpp
 ``` cpp
@@ -914,6 +924,7 @@ int maxFlow(int s, int t){//Dinic
         while( 0<(f=DFS(s,t,INF)) ) flow+= f;
     }
 }
+
 ```
 #Graph/MaximumClique.cpp
 ``` cpp
@@ -956,4 +967,5 @@ int solve(void)
         dp[i] = best;
     }
     return best;
-}```
+}
+```
