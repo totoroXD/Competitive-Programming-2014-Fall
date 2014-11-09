@@ -457,6 +457,153 @@ vector<Point> halfplane(vector<Line> l)
 }
 
 ```
+#Geometry/KDTree.cpp
+``` cpp
+#define squ(x) ((x)*(x))
+int ind;
+struct pt{
+  int id;
+  ll xx[2];
+  pt(){}
+  pt(int _id, ll a, ll b){ id = _id; xx[0] = a; xx[1] = b; }
+  pt(ll a, ll b){ xx[0] = a; xx[1] = b; }
+  bool operator < (const pt &a) const { return xx[ind] < a.xx[ind]; }
+  bool operator ==(const pt &a) const{ return xx[0]==a.xx[0] && xx[1] == a.xx[1];}
+  pt operator -(const pt &a){ return pt(xx[0]-a.xx[0], xx[1]-a.xx[1]);}
+};
+ll dis(const pt &a, const pt &b){ return squ(a.xx[0]-b.xx[0])+squ(a.xx[1]-b.xx[1]); }
+ll crs(const pt &a, const pt &b){ return a.xx[0]*b.xx[1] - a.xx[1]*b.xx[0]; }
+ll dot(const pt &a, const pt &b){ return a.xx[0]*b.xx[0] + a.xx[1]*b.xx[1]; }
+
+pt arr[MAXN];
+pt point[MAXN];
+priority_queue< pL > ansQ;
+
+struct kd_tree{
+  int child[MAXN << 3];
+  pt node[MAXN << 3];
+  void build(int LB, int RB, int rt=1, int dep=0){
+    if(LB > RB) return ;
+    child[rt] = RB - LB;
+    child[rt<<1] = child[(rt<<1)|1] = -1;
+    ind = dep%2;
+    int mid = (LB+RB)>>1;
+    nth_element(point+LB, point+mid, point+RB+1);
+    node[rt] = point[mid];
+    build(LB, mid-1, rt<<1, dep+1);
+    build(mid+1, RB, (rt<<1)|1, dep+1);
+  }
+  void Q(const pt &p, int rt=1, int dep=0){
+    if(-1 == child[rt]) return ;
+    pL now = mp(dis(p, node[rt]), ll(node[rt].id));
+    int dim = dep%2, lc = (rt<<1), rc = (rt<<1)|1;
+    bool flag = false;
+    if(p.xx[dim] >= node[rt].xx[dim]) swap(lc, rc);
+    if(child[lc] != -1) Q(p, lc, dep+1);
+    if(sz(ansQ) < 2){
+      ansQ.push(now);
+      flag = true;
+    }else{
+      if(now < ansQ.top())
+          ansQ.pop(), ansQ.push(now);
+      if(squ(p.xx[dim]-node[rt].xx[dim]) < ansQ.top().x)
+        flag = true;
+    }
+    if(flag && child[rc]!=-1) Q(p, rc, dep+1);
+  }
+};
+
+kd_tree tree;
+vector< pt > rpt;
+int coor(const pt &a){
+  if(a.xx[1] >=0 ){
+    if(a.xx[0] >=0 )return 0;
+    else return 1;
+  }else{
+    if(a.xx[0] >=0 )return 3;
+    else return 2;
+  }
+}
+bool test(int now){
+  pt o, p, q;
+  int coorP, coorQ;
+  int cnt = 0;
+  o = arr[now];
+  for(int i=0;i<sz(rpt);i++){
+    if(rpt[i] == o)
+      return true;
+
+    p = rpt[i] - o;
+    if(i+1==sz(rpt)) q = rpt[0] - o;
+    else q = rpt[i+1] - o;
+    coorP = coor(p);
+    coorQ = coor(q);
+    if(crs(p, q)==0 && dot(p, q) < 0) return true;
+
+    if(coorP==coorQ)continue;
+    if((coorP+1)%4==coorQ){
+      cnt++;
+      continue;
+    }
+    if((coorQ+1)%4==coorP){
+      cnt--;
+      continue;
+    }
+    if(crs(p, q) > 0) cnt += 2;
+    else cnt -= 2;
+  }
+  return (cnt !=0);
+}
+
+int main(){
+  int tn;
+  int n;
+  ll a, b;
+  int R, qn;
+  int bk;
+  int i;
+  int Sz;
+  int ans1, ans2;
+
+  cin >> tn;
+  for(int z=1;z<=tn;z++){
+    printf("Case #%d:\n", z);
+    cin >> n;
+    for(i=0;i<n;i++){
+      cin >> a >> b;
+      arr[i] = pt(i+1, a, b);
+    }
+    cin >> R;
+    for(int r=1;r<=R;r++){
+      printf("Region %d\n", r);
+      cin >> bk;
+      rpt.clear();
+      for(i=0;i<bk;i++){
+        cin >> a >> b;
+        rpt.pb(pt(a,b));
+      }
+      reverse(all(rpt));
+
+      for(i=Sz=0;i<n;i++)
+        if(test(i))
+          point[Sz++] = arr[i];
+        
+      tree.build(0, Sz-1);
+      cin >> qn;
+      while(qn--){
+        cin >> a >> b;
+        while(sz(ansQ))ansQ.pop();
+        tree.Q(pt(a,b));
+        ans2 = ansQ.top().y; ansQ.pop();
+        ans1 = ansQ.top().y; ansQ.pop();
+        printf("%d %d\n", ans1, ans2);
+      }
+    }
+  }
+  return 0;
+}
+
+```
 #Graph/BCC.cpp
 ``` cpp
 // Knights of the Round Table
@@ -969,6 +1116,87 @@ int solve(void)
     return best;
 }
 ```
+#Graph/TreeDC.cpp
+``` cpp
+// POJ 1741
+struct edge {int to, cost; };
+vector<edge> G[MAX_N], dis;
+int minval, fctd;
+bool vst[MAX_N];
+
+
+int find_w(int v, int par, int V)
+{
+	int w=1, val=0;
+	for(int i=0; i<G[v].size(); i++){
+		edge &e = G[v][i];
+		if(!vst[e.to] && e.to!=par){
+			int wson = find_w(e.to, v, V);
+			w+= wson;
+			val = max(wson, val);
+		}
+	}
+	val = max(V-w, val);
+	if(val<minval)
+	{
+		minval = val;
+		fctd = v;
+	}
+	return w;
+}
+int find_ctd(int root, int V)
+{
+	minval = INF;
+	find_w(root, root, V);
+	return fctd;
+}
+void DFS(int v, int par, int d)		// find distance and size of a tree
+{
+	dis.push_back((edge){v, d});
+	for(int i=0; i<G[v].size(); i++){
+		edge &e = G[v][i];
+		if(!vst[e.to] && e.to!=par)
+			DFS(e.to, v, d+e.cost);
+	}
+}
+bool cmp(edge a, edge b){ return a.cost<b.cost; }
+
+int find_pair(int root, int k)
+{
+	int res=0;
+	dis.clear();
+	DFS(root, root, 0);
+	sort(dis.begin(), dis.end(), cmp);
+	for(int i=0, j=dis.size()-1; i<j; i++)
+	{
+		while(i<j && dis[j].cost+dis[i].cost>k) j--;
+		res+= j-i;
+	}
+	return res;
+}
+int solve(int root, int k)
+{
+	dis.clear();
+	DFS(root, root, 0);
+	int res=0, V=dis.size();
+	root = find_ctd(root, V);
+	res+= find_pair(root, k);
+
+	vst[root] = 1;
+	for(int i=0; i<G[root].size(); i++)
+	{
+		edge &e = G[root][i];
+		if(!vst[e.to])
+		{
+			res+= solve(e.to, k);
+			if(k-2*e.cost>=0)
+			res-= find_pair(e.to, k-2*e.cost);
+		}
+	}
+	vst[root] = 0;
+	return res;
+}
+```
 #Number/Number.cpp
 ``` cpp
 LL powMod(LL a, LL p, LL m){
@@ -1136,6 +1364,81 @@ map<int,int> moebius(int n){
 		res[d] = mu;
 	}
 	return res;
+}
+
+```
+#Number/FFT.cpp
+``` cpp
+cD bta[1<<19], gar[1<<19], al[1<<19];
+cD ba[1<<19], bb[1<<19], bg[1<<19];
+double nu[1<<19];
+
+void fft(cD xx[], int kh, int n, cD yy[], bool inv){
+  if(n==1){
+    yy[0] = xx[0];
+    return ;
+  }
+  int h = (n+1)/2;
+  cD *xeven = new cD[h], *xodd = new cD[h];
+  cD *yeven = new cD[h], *yodd = new cD[h];
+  cD w(1, 0), wn;
+  for(int i=0;i<h;i++){
+    xeven[i] = xx[i+i];
+    if(i+i+1<n)xodd[i] = xx[i+i+1];
+  }
+  fft(xeven,kh/2, h, yeven, inv);
+  fft(xodd, kh/2, n-h, yodd, inv);
+  if(inv) wn = cD(cos(-2*pi/kh), sin(-2*pi/kh));
+  else wn = cD(cos(2*pi/kh), sin(2*pi/kh));
+  for(int i=0;i<h;i++){
+    yy[i] = yeven[i] + w*yodd[i];
+    if(i+h < n)yy[i + h] = yeven[i] - w*yodd[i];
+    w *= wn;
+  }
+  delete xeven; delete xodd;
+  delete yeven; delete yodd;
+}
+
+int main()
+{
+  int n, nn, nn2;
+  int i;
+  double t;
+
+  while(scanf("%d",&n)!=EOF){
+    for(nn2=1;nn2<n+n;nn2*=2);
+    nn = n+n;
+    assert(nn <= (1<<18));
+
+    for(i=0;i<nn;i++){
+      al[i] = bta[i] = gar[i] = cD(0,0);
+      ba[i] = bb[i] = bg[i] = cD(0,0);
+    }
+
+    for(i=0;i<n;i++){
+      scanf("%lf", &t);
+      bta[i] = cD(t,0);
+    }
+
+    for(i=0;i<n;i++){
+      scanf("%lf", &t);
+      gar[i] = cD(t, 0);
+    }
+    fft(bta, nn2, nn, bb, false);
+    fft(gar, nn2, nn, bg, false);
+    for(i=0;i<nn;i++)
+      ba[i] = bg[i]/bb[i];
+
+    fft(ba, nn2, nn, al, true);
+    printf("al:");
+    for(i=0;i<nn;i++)
+      printf("%.4lf ", double((al[i]).real())/double(nn));
+    puts("");
+    for(i=0;i<n;i++)
+      printf("%.4lf\n", double((al[i]+al[i+nn/2]).real())/double(nn));
+
+  }
+  return 0;
 }
 
 ```
