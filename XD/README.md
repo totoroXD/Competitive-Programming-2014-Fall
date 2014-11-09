@@ -1,5 +1,5 @@
 #DataStructure/SplaySequence.cpp
-'''
+```
 struct SplaySequence{
   static const int MAXN = 201111;
   struct Node{
@@ -170,9 +170,9 @@ struct SplaySequence{
    2 3 4 5 6 7 8 9 10 1
 
 */
-'''
+```
 #DataStructure/SegmentTree(kth).cpp
-'''
+```
 struct pa{
     int val, i, od, sum;
     pa(int _val=0, int _i=0, int _od=0){
@@ -249,9 +249,9 @@ struct segment_tree{
         }
     }
 }st;
-'''
+```
 #Geometry/geometry.cpp
-'''
+```
 const double EPS = 1e-8, PI = 3.14159265358979323846;
 int dcmp(double x){
         if(x<-EPS)return -1;
@@ -453,9 +453,9 @@ vector<Point> halfplane(vector<Line> l)
     res.push_back(q[L].intersectionWithLine(q[R-1]));
     return res;
 }
-'''
+```
 #Graph/BCC.cpp
-'''
+```
 // Knights of the Round Table
 typedef vector<vector<int> > Graph;
 Graph G, sG;
@@ -517,9 +517,9 @@ void dfs(int v, int p, int d){
 			}
 		}
 	}
-}'''
+}```
 #Graph/MinCut.cpp
-'''
+```
 int V, G[MAX_V][MAX_V], w[MAX_V], contract[MAX_V];
 bool vst[MAX_V];
 
@@ -559,9 +559,9 @@ int mincut(){//Stoer-Wagner O(V^3)
             }
     }
     return res;
-}'''
+}```
 #Graph/GeneralMatching.cpp
-'''
+```
 int inQ[MAXN], frm[MAXN], typ[MAXN], wife[MAXN], fa[MAXN], vit[MAXN];
 deque<int> Q;
 vector<int> E[MAXN];
@@ -621,9 +621,9 @@ void Edmond(){
   for(int i=1;i<=n;i++) E[i].clear(), wife[i] = 0;
   for(int i=1;i<=n;i++) if(!wife[i]) path(i);
 }
-'''
+```
 #Graph/MincostFlow.cpp
-'''
+```
 struct edge{
 	int to, cap, rev, cost;
 	edge(int _to, int _cap, int _rev, int _cost): to(_to), cap(_cap), rev(_rev), cost(_cost) {}
@@ -678,9 +678,9 @@ int mincost_flow(int s, int t, int flow){
 	}
 	return cost;
 }
-'''
+```
 #Graph/HeavyLight.cpp
-'''
+```
 const int V = 100000;
 vector<int> adj[V];
 int parent[V], heavy[V];
@@ -720,9 +720,9 @@ int lca(int i, int j){
         if (depth[head[i]] > depth[head[j]]) i = parent[head[i]];
         else j = parent[head[j]];
     return depth[i] < depth[j] ? i : j;
-}'''
+}```
 #Graph/SCC.cpp
-'''
+```
 #define MAX_V 10000
 int V;
 vector<int> G[MAX_V];
@@ -761,9 +761,9 @@ int scc(){
         if(!used[vs[i]])
             rdfs(vs[i], k++);
     return k;
-}'''
+}```
 #Graph/MinimumDirectedSpanningTree.cpp
-'''
+```
 map<string, int> lib;
 string name[110];
 int courN, m;
@@ -864,9 +864,9 @@ int main()
   }
   return 0;
 }
-'''
+```
 #Graph/MaxFlow.cpp
-'''
+```
 int lvl[MAX_V],iter[MAX_V],V;
 struct edge{int to, cap, f, rev;};
 vector<edge> G[MAX_V];
@@ -914,9 +914,9 @@ int maxFlow(int s, int t){//Dinic
         while( 0<(f=DFS(s,t,INF)) ) flow+= f;
     }
 }
-'''
+```
 #Graph/MaximumClique.cpp
-'''
+```
 int n;
 int G[MAXN][MAXN];
 int dp[MAXN], best;
@@ -956,4 +956,4 @@ int solve(void)
         dp[i] = best;
     }
     return best;
-}'''
+}```
