@@ -1,5 +1,5 @@
 #DataStructure/SplaySequence.cpp
-```
+``` cpp
 struct SplaySequence{
   static const int MAXN = 201111;
   struct Node{
@@ -172,7 +172,7 @@ struct SplaySequence{
 */
 ```
 #DataStructure/SegmentTree(kth).cpp
-```
+``` cpp
 struct pa{
     int val, i, od, sum;
     pa(int _val=0, int _i=0, int _od=0){
@@ -251,7 +251,7 @@ struct segment_tree{
 }st;
 ```
 #Geometry/geometry.cpp
-```
+``` cpp
 const double EPS = 1e-8, PI = 3.14159265358979323846;
 int dcmp(double x){
         if(x<-EPS)return -1;
@@ -455,7 +455,7 @@ vector<Point> halfplane(vector<Line> l)
 }
 ```
 #Graph/BCC.cpp
-```
+``` cpp
 // Knights of the Round Table
 typedef vector<vector<int> > Graph;
 Graph G, sG;
@@ -519,7 +519,7 @@ void dfs(int v, int p, int d){
 	}
 }```
 #Graph/MinCut.cpp
-```
+``` cpp
 int V, G[MAX_V][MAX_V], w[MAX_V], contract[MAX_V];
 bool vst[MAX_V];
 
@@ -561,7 +561,7 @@ int mincut(){//Stoer-Wagner O(V^3)
     return res;
 }```
 #Graph/GeneralMatching.cpp
-```
+``` cpp
 int inQ[MAXN], frm[MAXN], typ[MAXN], wife[MAXN], fa[MAXN], vit[MAXN];
 deque<int> Q;
 vector<int> E[MAXN];
@@ -623,7 +623,7 @@ void Edmond(){
 }
 ```
 #Graph/MincostFlow.cpp
-```
+``` cpp
 struct edge{
 	int to, cap, rev, cost;
 	edge(int _to, int _cap, int _rev, int _cost): to(_to), cap(_cap), rev(_rev), cost(_cost) {}
@@ -680,7 +680,7 @@ int mincost_flow(int s, int t, int flow){
 }
 ```
 #Graph/HeavyLight.cpp
-```
+``` cpp
 const int V = 100000;
 vector<int> adj[V];
 int parent[V], heavy[V];
@@ -722,7 +722,7 @@ int lca(int i, int j){
     return depth[i] < depth[j] ? i : j;
 }```
 #Graph/SCC.cpp
-```
+``` cpp
 #define MAX_V 10000
 int V;
 vector<int> G[MAX_V];
@@ -763,7 +763,7 @@ int scc(){
     return k;
 }```
 #Graph/MinimumDirectedSpanningTree.cpp
-```
+``` cpp
 map<string, int> lib;
 string name[110];
 int courN, m;
@@ -866,7 +866,7 @@ int main()
 }
 ```
 #Graph/MaxFlow.cpp
-```
+``` cpp
 int lvl[MAX_V],iter[MAX_V],V;
 struct edge{int to, cap, f, rev;};
 vector<edge> G[MAX_V];
@@ -916,7 +916,7 @@ int maxFlow(int s, int t){//Dinic
 }
 ```
 #Graph/MaximumClique.cpp
-```
+``` cpp
 int n;
 int G[MAXN][MAXN];
 int dp[MAXN], best;
